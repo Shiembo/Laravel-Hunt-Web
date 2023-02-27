@@ -54,7 +54,7 @@ return [
     |
     */
 
-    'url' => env('https://mi-linux.wlv.ac.uk/~2120687/hunt/public/'),
+    'url' => env('APP_URL','https://mi-linux.wlv.ac.uk/~2120687/hunt/public/'),
 
     'asset_url' => env('ASSET_URL'),
 
