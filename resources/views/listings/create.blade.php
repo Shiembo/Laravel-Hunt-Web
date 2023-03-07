@@ -2,7 +2,7 @@
   <x-card class="p-10 max-w-lg mx-auto mt-24">
     <header class="text-center">
       <h2 class="text-2xl font-bold uppercase mb-1">Create a Gig</h2>
-      <p class="mb-4">Post a gig to find a developer</p>
+      <p class="mb-4">Post a Job to find a developer</p>
     </header>
 
     <form method="POST" action="{{ route('listings.store') }}" enctype="multipart/form-data">
@@ -98,7 +98,7 @@
 
       <div class="mb-6">
         <button class="bg-laravel text-white rounded py-2 px-4 hover:bg-black">
-          Create Gig
+          Create Job
         </button>
 
         <a href="/~2120687/hunt/public" class="text-black ml-4"> Back </a>

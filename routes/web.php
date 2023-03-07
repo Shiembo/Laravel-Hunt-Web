@@ -45,6 +45,8 @@ Route::delete('/listings/{listing}', [ListingController::class, 'destroy'])->mid
 // Manage Listings
 Route::get('/listings/manage', [ListingController::class, 'manage'])->middleware('auth');
 
+// Map Listings
+Route::get('/listings/map', [ListingController::class, 'map'])->middleware('auth');
 
 //single listings
 Route::get('/listings/{listing}', [ListingController::class, 'show']);
@@ -63,3 +65,5 @@ Route::get('/login', [UserController::class, 'login'])->name('login')->middlewar
 
 // Log In User
 Route::post('/users/authenticate', [UserController::class, 'authenticate']);
+
+Route::post('/check-email', [UserController::class, 'checkEmail'])->name('check.email');

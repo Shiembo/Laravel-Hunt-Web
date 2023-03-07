@@ -51,7 +51,8 @@ class UserController extends Controller
         return view('users.login');
     }
 
-    // Authenticate User
+
+   // Authenticate User
     public function authenticate(Request $request) {
         $formFields = $request->validate([
             'email' => ['required', 'email'],
@@ -66,5 +67,17 @@ class UserController extends Controller
 
         return back()->withErrors(['email' => 'Invalid Credentials'])->onlyInput('email');
     }
+	
+	public function checkEmail(Request $request)
+{
+    $email = $request->email;
+    $user = User::where('email', $email)->first();
+
+    if ($user) {
+        return response()->json(['exists' => true]);
+    }
+
+    return response()->json(['exists' => false]);
+}
 
 }

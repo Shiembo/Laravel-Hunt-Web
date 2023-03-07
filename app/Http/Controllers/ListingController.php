@@ -26,6 +26,7 @@ class ListingController extends Controller
 		
     }
 	
+	
 	//Show create form
 	 public function create() {
         return view('listings.create');
@@ -108,6 +109,15 @@ class ListingController extends Controller
 	// Manage Listings
     public function manage() {
         return view('listings.manage', ['listings' => auth()->user()->listings()->get()]);
+    }
+	
+	
+	// Manage Listings
+    public function map() { 
+        return view('listings.map', [
+	'listings' => Listing::latest()->filter(request(['tag', 'search']))->paginate(6)                                              
+	
+	]);
     }
 
 
