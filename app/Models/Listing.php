@@ -23,9 +23,5 @@ class Listing extends Model
         }
 	}
 	
-	// Relationship To User
-    public function user() {
-        return $this->belongsTo(User::class, 'user_id');
-    }
 	
 }
