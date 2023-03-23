@@ -25,7 +25,7 @@ Route::get('/', [ListingController::class, 'index']);
 
 
 //Show Create Form
-Route::get('/listings', [ListingController::class, 'create'])->middleware('auth');
+Route::get('/listings/create', [ListingController::class, 'create'])->middleware('auth');
 
 
 //Store Listing Data
@@ -65,6 +65,5 @@ Route::get('/login', [UserController::class, 'login'])->name('login')->middlewar
 
 // Log In User
 Route::post('/users/authenticate', [UserController::class, 'authenticate']);
-
 //check email
 Route::post('/check-email', [UserController::class, 'checkEmail'])->name('check.email');
