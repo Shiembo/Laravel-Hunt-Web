@@ -66,4 +66,5 @@ Route::get('/login', [UserController::class, 'login'])->name('login')->middlewar
 // Log In User
 Route::post('/users/authenticate', [UserController::class, 'authenticate']);
 
+//check email
 Route::post('/check-email', [UserController::class, 'checkEmail'])->name('check.email');
