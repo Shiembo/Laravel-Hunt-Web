@@ -75,6 +75,7 @@
   </footer>
 
   <x-flash-message />
+  @yield('scripts')
 </body>
 
 </html>

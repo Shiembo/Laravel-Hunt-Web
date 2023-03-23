@@ -1,7 +1,7 @@
 <x-layout>
   <x-card class="p-10 max-w-lg mx-auto mt-24">
     <header class="text-center">
-      <h2 class="text-2xl font-bold uppercase mb-1">Create a Gig</h2>
+      <h2 class="text-2xl font-bold uppercase mb-1">Create a Job</h2>
       <p class="mb-4">Post a Job to find a developer</p>
     </header>
 
@@ -72,17 +72,29 @@
         <p class="text-red-500 text-xs mt-1">{{$message}}</p>
         @enderror
       </div>
+					<div class="mb-6">
+	  <label for="logo" class="inline-block text-lg mb-2">
+		Company Logo
+	  </label>
+	  <div>
+		<input type="radio" id="use_camera" name="logo_input_option" value="camera" checked />
+		<label for="use_camera">Use Camera</label>
+		<input type="radio" id="select_file" name="logo_input_option" value="file" />
+		<label for="select_file">Select File</label>
+	  </div>
+	  <input type="file" id="logo_file" class="border border-gray-200 rounded p-2 w-full hidden" name="logo" accept="image/*" />
+	  <div id="logo_camera" class="border border-gray-200 rounded p-2 w-full">
+		<video id="camera_preview" class="w-full" autoplay playsinline></video>
+		<button id="capture_image">Capture Image</button>
+	  </div>
+	  <canvas id="captured_image" class="hidden"></canvas>
+	  <input type="hidden" id="captured_data" name="logo_base64" />
+	  @error('logo')
+	  <p class="text-red-500 text-xs mt-1">{{$message}}</p>
+	  @enderror
+	</div>
 
-      <div class="mb-6">
-        <label for="logo" class="inline-block text-lg mb-2">
-          Company Logo
-        </label>
-        <input type="file" class="border border-gray-200 rounded p-2 w-full" name="logo" />
 
-        @error('logo')
-        <p class="text-red-500 text-xs mt-1">{{$message}}</p>
-        @enderror
-      </div>
 
       <div class="mb-6">
         <label for="description" class="inline-block text-lg mb-2">
@@ -106,3 +118,52 @@
     </form>
   </x-card>
 </x-layout>>
+
+
+<script>
+  const useCamera = document.getElementById('use_camera');
+  const selectFile = document.getElementById('select_file');
+  const logoFile = document.getElementById('logo_file');
+  const logoCamera = document.getElementById('logo_camera');
+  const cameraPreview = document.getElementById('camera_preview');
+  const captureImageBtn = document.getElementById('capture_image');
+  const capturedImage = document.getElementById('captured_image');
+  const capturedData = document.getElementById('captured_data');
+  
+  let stream;
+
+  async function initCamera() {
+    try {
+      stream = await navigator.mediaDevices.getUserMedia({ video: true });
+      cameraPreview.srcObject = stream;
+    } catch (err) {
+      console.error('Error accessing camera:', err);
+      alert('Error accessing camera. Please check if your camera is connected and try again.');
+    }
+  }
+
+  useCamera.addEventListener('change', () => {
+    logoCamera.classList.remove('hidden');
+    logoFile.classList.add('hidden');
+    initCamera();
+  });
+
+  selectFile.addEventListener('change', () => {
+    logoFile.classList.remove('hidden');
+    logoCamera.classList.add('hidden');
+    if (stream) {
+      stream.getTracks().forEach(track => track.stop());
+    }
+  });
+
+  captureImageBtn.addEventListener('click', () => {
+    const ctx = capturedImage.getContext('2d');
+    capturedImage.width = cameraPreview.videoWidth;
+    capturedImage.height = cameraPreview.videoHeight;
+    ctx.drawImage(cameraPreview, 0, 0);
+    capturedData.value = capturedImage.toDataURL('image/png');
+  });
+
+  initCamera();
+</script>
+
