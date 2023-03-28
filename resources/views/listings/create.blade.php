@@ -85,8 +85,13 @@
 	  <input type="file" id="logo_file" class="border border-gray-200 rounded p-2 w-full hidden" name="logo" accept="image/*" />
 	  <div id="logo_camera" class="border border-gray-200 rounded p-2 w-full">
 		<video id="camera_preview" class="w-full" autoplay playsinline></video>
-		<button id="capture_image">Capture Image</button>
+		<button id="capture_image" type="button">Capture Image</button>
+	    <img id="display_captured_image" class="hidden mt-4" />
+
 	  </div>
+	  
+			  
+
 	  <canvas id="captured_image" class="hidden"></canvas>
 	  <input type="hidden" id="captured_data" name="logo_base64" />
 	  @error('logo')
@@ -156,12 +161,20 @@
     }
   });
 
+ 
+  const displayCapturedImage = document.getElementById('display_captured_image');
+
   captureImageBtn.addEventListener('click', () => {
     const ctx = capturedImage.getContext('2d');
     capturedImage.width = cameraPreview.videoWidth;
     capturedImage.height = cameraPreview.videoHeight;
     ctx.drawImage(cameraPreview, 0, 0);
-    capturedData.value = capturedImage.toDataURL('image/png');
+    const imageDataUrl = capturedImage.toDataURL('image/png');
+    capturedData.value = imageDataUrl;
+
+    // Display the captured image
+    displayCapturedImage.src = imageDataUrl;
+    displayCapturedImage.classList.remove('hidden');
   });
 
   initCamera();
