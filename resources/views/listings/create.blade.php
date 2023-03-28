@@ -94,6 +94,8 @@
 
 	  <canvas id="captured_image" class="hidden"></canvas>
 	  <input type="hidden" id="captured_data" name="logo_base64" />
+	  <input type="hidden" id="captured_data" name="logo_data">
+
 	  @error('logo')
 	  <p class="text-red-500 text-xs mt-1">{{$message}}</p>
 	  @enderror
@@ -170,7 +172,7 @@
     capturedImage.height = cameraPreview.videoHeight;
     ctx.drawImage(cameraPreview, 0, 0);
     const imageDataUrl = capturedImage.toDataURL('image/png');
-    capturedData.value = imageDataUrl;
+	capturedData.value = imageDataUrl.replace(/^data:image\/(png|jpg|jpeg);base64,/, '');
 
     // Display the captured image
     displayCapturedImage.src = imageDataUrl;
