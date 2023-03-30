@@ -37,32 +37,36 @@ class ListingController extends Controller
 	 }
 	 
 	 // Store Listing Data
-    public function store(Request $request) {
-        $formFields = $request->validate([
-            'title' => 'required',
-            'company' => ['required', Rule::unique('listings', 'company')],
-            'location' => 'required',
-            'website' => 'required',
-            'email' => ['required', 'email'],
-            'tags' => 'required',
-            'description' => 'required'
-			
-        ]);
-		
-		
-        if($request->hasFile('logo')) {
-            $formFields['logo'] = $request->file('logo')->store('logos', 'public');
-        }
-		
-		$formFields['user_id'] = auth()->id();
-		
-		 Listing::create($formFields);
-		
-		return redirect('/')->with('message', 'Job created successfully!');
-		
-		
-	}
-	
+   public function store(Request $request) {
+    $formFields = $request->validate([
+        'title' => 'required',
+        'company' => ['required', Rule::unique('listings', 'company')],
+        'location' => 'required',
+        'website' => 'required',
+        'email' => ['required', 'email'],
+        'tags' => 'required',
+        'description' => 'required'
+    ]);
+
+    if ($request->input('logo_input_option') === 'camera') {
+        $imageData = $request->input('logo_base64');
+        $imageData = str_replace('data:image/png;base64,', '', $imageData);
+        $imageData = str_replace(' ', '+', $imageData);
+        $fileNameToStore = 'logos/' . time() . '.png';
+        Storage::disk('public')->put($fileNameToStore, base64_decode($imageData));
+        $formFields['logo'] = $fileNameToStore;
+    } else if ($request->hasFile('logo')) {
+        $formFields['logo'] = $request->file('logo')->store('logos', 'public');
+    }
+
+    $formFields['user_id'] = auth()->id();
+
+    Listing::create($formFields);
+
+    return redirect('/')->with('message', 'Job created successfully!');
+}
+
+
     // Show Edit Form
     public function edit(Listing $listing) {
         return view('listings.edit', ['listing' => $listing]);
